@@ -47,6 +47,7 @@
   width: 50%;
   height: auto;
   padding: 20;
+  position: relative;
 }
 
 @media (max-width: 600px) {

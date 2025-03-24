@@ -1,4 +1,5 @@
-import Image from "next/image";
+'use client';
+import Image from "next/legacy/image";
 import styles from "./page.module.css";
 import { Paper, List, ListItem, ListItemText } from "@mui/material";
 
@@ -16,10 +17,11 @@ export default function Home() {
         <div className={styles.image}>
           <Image
             src="/imagesForChildren/playingchildren.png"
-            height={300}
-            width={500}
-            layout="responsive"
             alt=""
+            height={30}
+            width={30}
+            layout="responsive"
+            priority
           />
         </div>
 
