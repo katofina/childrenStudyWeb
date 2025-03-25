@@ -29,7 +29,7 @@ export default function RootLayout({
         <header className="headerGlobal">
           <Header />
         </header>
-        <main className="mainGlobal">
+        <main>
           {children}
         </main>
       </body>

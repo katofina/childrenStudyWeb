@@ -3,23 +3,33 @@ import {
   AppBar,
   Box,
   Button,
+  Drawer,
   IconButton,
   Toolbar,
   Typography,
   useTheme,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import { useState } from "react";
 
 const ARR_BUTTONS = ["Войти", "Зарегистрироваться"];
 
 export const Header = () => {
   const theme = useTheme();
+  const [isOpenDrawer, setIsOpenDrawer] = useState(false);
+
+  const handleToggle = () => {
+    setIsOpenDrawer(true);
+  };
+  const closeDrawer = () => {
+    setIsOpenDrawer(false);
+  };
 
   return (
     <AppBar sx={{ backgroundColor: "#FF7043", color: "#F5F5DC" }}>
       <Toolbar sx={{ justifyContent: "space-between" }}>
         <Box sx={{ display: "flex", gap: 5, alignItems: "center" }}>
-          <IconButton sx={{borderRadius: 0, "&:hover": {backgroundColor: "inherit"}}}>
+          <IconButton sx={{borderRadius: 0, "&:hover": {backgroundColor: "inherit"}}} onClick={handleToggle}>
             <MenuIcon sx={{color: "#F5F5DC", fontSize: "2rem"}}/>
           </IconButton>
           <Typography sx={{ fontSize: "2rem", fontWeight: "bold" }}>
@@ -49,6 +59,9 @@ export const Header = () => {
           ))}
         </Box>
       </Toolbar>
+      <Drawer open={isOpenDrawer} onClose={closeDrawer}>
+        <p>dfh</p>
+      </Drawer>
     </AppBar>
   );
 };
