@@ -1,9 +1,0 @@
-.buttonBox {
-  display: flex;
-}
-
-@media (max-width: 600px) {
-  .buttonBox {
-    display: none;
-  }
-}

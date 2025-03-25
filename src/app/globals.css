@@ -15,6 +15,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   gap: 10;
+  background-color: #FAF3E0 !important;
 }
 
 * {

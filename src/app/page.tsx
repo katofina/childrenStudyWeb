@@ -18,8 +18,8 @@ export default function Home() {
           <Image
             src="/imagesForChildren/playingchildren.png"
             alt=""
-            height={30}
-            width={30}
+            height={8}
+            width={10}
             layout="responsive"
             priority
           />

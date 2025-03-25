@@ -16,13 +16,12 @@
 
 .paper {
   width: 95%;
-  height: 70%;
-  padding: 20;
+  padding: 20px;
   display: flex;
   align-items: center;
-  background-color: #fff;
   border-radius: 16px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  background-color: #FFAB91 !important;
 }
 
 .list {
@@ -31,15 +30,17 @@
   list-style-type: none;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   color: #333;
+  min-height: 500px;
 }
 
 .listItem {
   padding: 15px;
   margin: 10px 0;
-  background-color: rgba(var(--gray-rgb), 0.1);
+  background-color: #ECEFF1;
   border-radius: 8px;
-  min-height: 80px;
+  height: calc(500px / 4);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
