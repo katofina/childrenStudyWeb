@@ -1,0 +1,1 @@
+export type LessonName = "Русский" | "Математика" | "Scratch";

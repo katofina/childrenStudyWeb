@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useState } from "react";
+import { DrawerList } from "../Drawer/DrawerList";
 
 const ARR_BUTTONS = ["Войти", "Зарегистрироваться"];
 
@@ -60,7 +61,7 @@ export const Header = () => {
         </Box>
       </Toolbar>
       <Drawer open={isOpenDrawer} onClose={closeDrawer}>
-        <p>dfh</p>
+        <DrawerList/>
       </Drawer>
     </AppBar>
   );
