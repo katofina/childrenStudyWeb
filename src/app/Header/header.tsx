@@ -27,20 +27,34 @@ export const Header = () => {
   };
 
   return (
-    <AppBar sx={{ backgroundColor: "#FF7043", color: "#F5F5DC" }}>
+    <AppBar
+      position="sticky"
+      sx={{
+        background: "linear-gradient(135deg, #FF7B72 0%, #FFD86A 55%, #4FC3F7 100%)",
+        color: "#1B1F3B",
+        boxShadow: "0 10px 24px rgba(0,0,0,0.18)",
+      }}
+    >
       <Toolbar sx={{ justifyContent: "space-between" }}>
-        <Box sx={{ display: "flex", gap: 5, alignItems: "center" }}>
-          <IconButton sx={{borderRadius: 0, "&:hover": {backgroundColor: "inherit"}}} onClick={handleToggle}>
-            <MenuIcon sx={{color: "#F5F5DC", fontSize: "2rem"}}/>
+        <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
+          <IconButton
+            sx={{
+              borderRadius: 1,
+              backgroundColor: "rgba(255,255,255,0.25)",
+              "&:hover": { backgroundColor: "rgba(255,255,255,0.4)" },
+            }}
+            onClick={handleToggle}
+          >
+            <MenuIcon sx={{ color: "#1B1F3B", fontSize: "2rem" }} />
           </IconButton>
-          <Typography sx={{ fontSize: "2rem", fontWeight: "bold" }}>
+          <Typography sx={{ fontSize: "1.8rem", fontWeight: "800" }}>
             ChildrenStudy
           </Typography>
         </Box>
         <Box
           sx={{
             display: "flex",
-            gap: 2,
+            gap: 1,
             [theme.breakpoints.down("md")]: { display: "none" },
           }}
         >
@@ -48,10 +62,11 @@ export const Header = () => {
             <Button
               variant="contained"
               sx={{
-                color: "inherit",
-                borderColor: "#F5F5DC",
-                backgroundColor: "#E2725B",
-                "&:hover": { backgroundColor: "#b8391f" },
+                color: "#1B1F3B",
+                borderColor: "rgba(27,31,59,0.25)",
+                backgroundColor: "rgba(255,255,255,0.8)",
+                fontWeight: 700,
+                "&:hover": { backgroundColor: "rgba(255,255,255,1)" },
               }}
               key={item}
             >
