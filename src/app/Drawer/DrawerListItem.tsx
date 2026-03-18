@@ -1,49 +1,37 @@
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { Collapse, List, ListItemButton, ListItemText } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState, useMemo, useCallback, memo } from "react";
 import { LessonName } from "../types/types";
 import {
   LESSONS_LIST,
-  MATH_LESSONS,
-  RUS_LESSONS,
+  MATH_LESSON_NAMES,
+  RUS_LESSON_NAMES,
+  SCRATCH_LESSON_NAMES,
 } from "../constants/constants";
 
 interface Prop {
   item: LessonName;
 }
 
-export const DrawerListItem = ({ item }: Prop) => {
+export const DrawerListItem = memo(({ item }: Prop) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [lessonArray, setLessonArray] = useState<Array<string>>([]);
 
-  useEffect(() => {
-    const setCorrectArray = (lessonQuantity: number) => {
-      if (lessonQuantity > 0) {
-        const rightArray = new Array(lessonQuantity)
-          .fill(item + " ")
-          .map((item, index) => item + (index + 1));
-        setLessonArray(rightArray);
-      } else setLessonArray([]);
-    };
-
+  const lessonArray = useMemo(() => {
     switch (item) {
       case LESSONS_LIST[0]:
-        setCorrectArray(RUS_LESSONS);
-        break;
+        return RUS_LESSON_NAMES;
       case LESSONS_LIST[1]:
-        setCorrectArray(MATH_LESSONS);
-        break;
+        return MATH_LESSON_NAMES;
       case "Scratch":
-        setCorrectArray(0);
-        break;
+        return SCRATCH_LESSON_NAMES;
       default:
-        setCorrectArray(0);
+        return [];
     }
   }, [item]);
 
-  const chooseLesson = () => {
+  const chooseLesson = useCallback(() => {
     setIsOpen((prev) => !prev);
-  };
+  }, []);
 
   return (
     <>
@@ -53,13 +41,15 @@ export const DrawerListItem = ({ item }: Prop) => {
       </ListItemButton>
       <Collapse in={isOpen} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          {lessonArray.map((item) => (
-            <ListItemButton sx={{pl: 4}} key={item}>
-              <ListItemText primary={item} />
+          {lessonArray.map((lessonName) => (
+            <ListItemButton sx={{ pl: 4 }} key={lessonName}>
+              <ListItemText primary={lessonName} />
             </ListItemButton>
           ))}
         </List>
       </Collapse>
     </>
   );
-};
+});
+
+DrawerListItem.displayName = "DrawerListItem";

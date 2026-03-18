@@ -1,8 +1,9 @@
 import { Box, List } from "@mui/material";
+import { memo } from "react";
 import { LESSONS_LIST } from "../constants/constants";
 import { DrawerListItem } from "./DrawerListItem";
 
-export const DrawerList = () => {
+export const DrawerList = memo(() => {
   return (
     <Box sx={{ width: 250 }} role="presentation">
       <List>
@@ -12,4 +13,6 @@ export const DrawerList = () => {
       </List>
     </Box>
   );
-};
+});
+
+DrawerList.displayName = "DrawerList";

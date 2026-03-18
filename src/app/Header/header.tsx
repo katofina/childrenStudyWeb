@@ -75,8 +75,13 @@ export const Header = () => {
           ))}
         </Box>
       </Toolbar>
-      <Drawer open={isOpenDrawer} onClose={closeDrawer}>
-        <DrawerList/>
+      <Drawer
+        open={isOpenDrawer}
+        onClose={closeDrawer}
+        transitionDuration={0}
+        disableScrollLock
+      >
+        <DrawerList />
       </Drawer>
     </AppBar>
   );
