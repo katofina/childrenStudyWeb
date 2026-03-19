@@ -1,5 +1,6 @@
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { Collapse, List, ListItemButton, ListItemText } from "@mui/material";
+import Link from "next/link";
 import { useState, useMemo, useCallback, memo } from "react";
 import { LessonName } from "../types/types";
 import {
@@ -29,6 +30,21 @@ export const DrawerListItem = memo(({ item }: Prop) => {
     }
   }, [item]);
 
+  const getHref = useCallback((lessonName: string) => {
+    const parts = lessonName.split(' ');
+    const number = parts[parts.length - 1];
+    switch (item) {
+      case "Русский":
+        return `/russian/${number}`;
+      case "Математика":
+        return `/math/${number}`;
+      case "Scratch":
+        return `/scratch/${number}`;
+      default:
+        return '/';
+    }
+  }, [item]);
+
   const chooseLesson = useCallback(() => {
     setIsOpen((prev) => !prev);
   }, []);
@@ -42,9 +58,11 @@ export const DrawerListItem = memo(({ item }: Prop) => {
       <Collapse in={isOpen} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           {lessonArray.map((lessonName) => (
-            <ListItemButton sx={{ pl: 4 }} key={lessonName}>
-              <ListItemText primary={lessonName} />
-            </ListItemButton>
+            <Link key={lessonName} href={getHref(lessonName)} passHref>
+              <ListItemButton sx={{ pl: 4 }}>
+                <ListItemText primary={lessonName} />
+              </ListItemButton>
+            </Link>
           ))}
         </List>
       </Collapse>
