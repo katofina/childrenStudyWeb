@@ -3,76 +3,51 @@
 import { useEffect, useMemo, useState } from "react";
 import { fetchLessonIntroFromFirestore } from "../firebase/lessonService";
 import { LessonIntroData } from "../types/types";
+import Image from "next/image";
 
 export interface LessonIntroProps {
   lessonNumber: number;
   firestoreEnabled?: boolean;
-  onDataLoaded?: (data: LessonIntroData) => void;
 }
 
 const visualImagePool = [
   "/imagesForChildren/cloud.gif",
-  "/imagesForChildren/cloud-2.gif",
-  "/imagesForChildren/cloud-3.gif",
+  "/imagesForChildren/clouds.gif",
   "/imagesForChildren/sun.gif",
-  "/imagesForChildren/butterfly.gif",
+  "/imagesForChildren/butterflies.gif",
 ];
 
-export function LessonIntro({ lessonNumber, firestoreEnabled = true, onDataLoaded }: LessonIntroProps) {
+export function LessonIntro({
+  lessonNumber,
+  firestoreEnabled = true,
+}: LessonIntroProps) {
   const [data, setData] = useState<LessonIntroData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   const backgroundImage = useMemo(() => {
     const idx = Math.floor(Math.random() * visualImagePool.length);
     return visualImagePool[idx];
   }, []);
 
-  const renderedNumberImage = useMemo(() => `/imagesForChildren/number-${lessonNumber}.gif`, [lessonNumber]);
-  const attentionStatic = "Внимание";
-
-  const fallbackData: LessonIntroData = {
-    lessonNumber,
-    preAttentionText: "В стране Русского языка живут буквы и звуки. Знакомимся с жителями страны - весёлыми человечками-буквами. Весёлые озорные человечки очень любят говорить, петь и шутить.",
-    postAttentionText: "Начинаем знакомство с весёлыми буковками-певуньями.",
-  };
-
   useEffect(() => {
-    let canceled = false;
-
     async function load() {
       setLoading(true);
       try {
         if (firestoreEnabled) {
           const result = await fetchLessonIntroFromFirestore(lessonNumber);
-          if (canceled) return;
-
-          const nextData = result || fallbackData;
-          setData(nextData);
-          if (onDataLoaded) onDataLoaded(nextData);
+          setData(result);
         } else {
-          if (canceled) return;
-
-          setData(fallbackData);
-          if (onDataLoaded) onDataLoaded(fallbackData);
+          setError("На данный момент урок не доступен.")
         }
       } catch (e) {
         console.error("LessonIntro load error:", e);
-        if (!canceled) {
-          setData(fallbackData);
-          if (onDataLoaded) onDataLoaded(fallbackData);
-        }
-      } finally {
-        if (!canceled) {
-          setLoading(false);
-        }
-      }
+        setError("На данный момент урок не доступен");
+      };
     }
 
     load();
-    return () => {
-      canceled = true;
-    };
-  }, [lessonNumber, firestoreEnabled, onDataLoaded]);
+  }, [lessonNumber, firestoreEnabled]);
 
   if (loading) {
     return <div>Загрузка урока {lessonNumber}...</div>;
@@ -81,23 +56,29 @@ export function LessonIntro({ lessonNumber, firestoreEnabled = true, onDataLoade
   if (!data) {
     return <div>Данные урока не найдены.</div>;
   }
+  
+  if (error.length) {
+    return <div>{error}</div>
+  }
 
   return (
-    <div style={{
-      position: "relative",
-      backgroundColor: "#C9FFEA",
-      borderRadius: "24px",
-      border: "3px solid #1F4DFF",
-      padding: "24px",
-      textAlign: "center",
-      color: "#08387A",
-      fontFamily: "Comic Sans MS, Comic Neue, Segoe UI, sans-serif",
-      overflow: "hidden",
-      minWidth: "310px",
-      maxWidth: "1100px",
-      margin: "0 auto",
-    }}>
-      <img
+    <div
+      style={{
+        position: "relative",
+        backgroundColor: "#C9FFEA",
+        borderRadius: "24px",
+        border: "3px solid #1F4DFF",
+        padding: "24px",
+        textAlign: "center",
+        color: "#08387A",
+        fontFamily: "Comic Sans MS, Comic Neue, Segoe UI, sans-serif",
+        overflow: "hidden",
+        minWidth: "310px",
+        maxWidth: "1100px",
+        margin: "0 auto",
+      }}
+    >
+      <Image
         src={backgroundImage}
         alt="background"
         style={{
@@ -113,26 +94,37 @@ export function LessonIntro({ lessonNumber, firestoreEnabled = true, onDataLoade
       />
 
       <div style={{ position: "relative", zIndex: 2 }}>
-        <h1 style={{ margin: 0, color: "#042D66", fontSize: "3.2rem" }}>Страна Русского языка</h1>
-        <p style={{ margin: "12px 0 24px", fontSize: "1.7rem", color: "#022155" }}>
-          Путешествие {data.lessonNumber}
-        </p>
-
-        <img
-          src={renderedNumberImage}
-          alt={`Урок ${data.lessonNumber}`}
-          style={{ width: "140px", margin: "0 auto 18px", display: "block" }}
-          onError={(e) => {
-            (e.currentTarget as HTMLImageElement).src = "/imagesForChildren/number-1.png";
+        <h1 style={{ margin: 0, color: "#042D66", fontSize: "3.2rem" }}>
+          Страна Русского языка
+        </h1>
+        <p
+          style={{
+            margin: "12px 0 24px",
+            fontSize: "1.7rem",
+            color: "#022155",
           }}
-        />
+        >
+          Путешествие{" "}
+          <Image
+            src="/imagesForChildren/${lessonNumber}.gif"
+            alt={`Урок ${data.lessonNumber}`}
+            style={{ width: "140px", margin: "0 auto 18px", display: "block" }}
+          />
+        </p>
 
         <p style={{ fontSize: "1.3rem", lineHeight: 1.5, padding: "0 16px" }}>
           {data.preAttentionText}
         </p>
 
-        <p style={{ fontSize: "2.2rem", color: "#DA1E21", fontWeight: 800, margin: "18px 0" }}>
-          {attentionStatic}
+        <p
+          style={{
+            fontSize: "2.2rem",
+            color: "#DA1E21",
+            fontWeight: 800,
+            margin: "18px 0",
+          }}
+        >
+          Внимание!
         </p>
 
         <p style={{ fontSize: "1.35rem", lineHeight: 1.5, padding: "0 16px" }}>
@@ -142,5 +134,3 @@ export function LessonIntro({ lessonNumber, firestoreEnabled = true, onDataLoade
     </div>
   );
 }
-
-// TODO: add images, change number on image
